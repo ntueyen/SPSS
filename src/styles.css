@@ -184,7 +184,7 @@ h3 {
 }
 
 .reference-layout {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .intro p,
@@ -409,4 +409,47 @@ h3 {
   .lesson-visual img {
     min-height: 190px;
   }
+}
+
+
+.video-reference article {
+  max-width: 920px;
+}
+
+.video-reference ol {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding-left: 1.4rem;
+}
+
+.video-item {
+  padding: 16px 18px;
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(23, 35, 33, 0.05);
+}
+
+.video-item a {
+  display: inline-block;
+  color: var(--primary-dark);
+  font-weight: 800;
+  line-height: 1.55;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.video-item span {
+  display: block;
+  margin-top: 4px;
+  color: var(--accent);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.video-item p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.8;
 }
