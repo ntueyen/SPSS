@@ -1,0 +1,277 @@
+:root {
+  color-scheme: light;
+  font-family:
+    Inter, 'Noto Sans TC', 'Microsoft JhengHei', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f5f7f4;
+  color: #17211c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app {
+  min-height: 100vh;
+  background:
+    linear-gradient(140deg, rgba(75, 129, 104, 0.14), transparent 38%),
+    linear-gradient(320deg, rgba(205, 91, 69, 0.12), transparent 34%),
+    #f5f7f4;
+  color: #17211c;
+  padding: 32px;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.app-dark {
+  color-scheme: dark;
+  background:
+    linear-gradient(140deg, rgba(84, 146, 118, 0.16), transparent 38%),
+    linear-gradient(320deg, rgba(231, 128, 96, 0.13), transparent 34%),
+    #111815;
+  color: #f5fbf7;
+}
+
+.workspace {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.topbar,
+.heroPanel,
+.grid {
+  display: grid;
+  gap: 20px;
+}
+
+.topbar {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #cd5b45;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 4.2rem);
+  line-height: 1;
+}
+
+h2 {
+  max-width: 720px;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  line-height: 1.08;
+}
+
+h3 {
+  font-size: 1.05rem;
+}
+
+.panel {
+  border: 1px solid rgba(23, 33, 28, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 50px rgba(23, 33, 28, 0.08);
+}
+
+.app-dark .panel {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(24, 34, 30, 0.78);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+}
+
+.heroPanel {
+  grid-template-columns: minmax(0, 1fr) 220px;
+  align-items: center;
+  min-height: 300px;
+  padding: 34px;
+}
+
+.heroPanel p {
+  max-width: 720px;
+  margin-top: 16px;
+  color: #4f5d55;
+  line-height: 1.8;
+}
+
+.app-dark .heroPanel p {
+  color: #c4d1ca;
+}
+
+.status,
+.panelTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status {
+  margin-bottom: 16px;
+  color: #2f7d5a;
+  font-weight: 800;
+}
+
+.scoreBox {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 24px;
+  border-radius: 8px;
+  background: #17211c;
+  color: #fff;
+}
+
+.scoreBox strong {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.scoreLabel {
+  color: #b8c8bf;
+}
+
+.grid {
+  grid-template-columns: 0.95fr 1.45fr 1fr;
+  margin-top: 20px;
+}
+
+.controls,
+.chart,
+.summary {
+  padding: 22px;
+}
+
+.panelTitle {
+  margin-bottom: 24px;
+}
+
+.iconButton,
+.stepper button,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  cursor: pointer;
+}
+
+.iconButton,
+.stepper button {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: #17211c;
+  color: #fff;
+}
+
+.app-dark .iconButton,
+.app-dark .stepper button {
+  background: #f5fbf7;
+  color: #17211c;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: 12px;
+}
+
+input[type='range'] {
+  accent-color: #cd5b45;
+  width: 100%;
+}
+
+.secondary {
+  width: 100%;
+  min-height: 44px;
+  gap: 8px;
+  margin-top: 22px;
+  border-radius: 8px;
+  background: #e8eee9;
+  color: #17211c;
+}
+
+.app-dark .secondary {
+  background: #24332d;
+  color: #f5fbf7;
+}
+
+.bars {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.bar {
+  display: grid;
+  grid-template-columns: 86px 1fr 34px;
+  align-items: center;
+  gap: 12px;
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.bar i {
+  display: block;
+  height: 12px;
+  border-radius: 999px;
+  background: #4b8168;
+}
+
+.bar.active {
+  background: rgba(75, 129, 104, 0.12);
+}
+
+.bar.active i {
+  background: #cd5b45;
+}
+
+.summary p {
+  margin-top: 12px;
+  color: #4f5d55;
+  line-height: 1.75;
+}
+
+.app-dark .summary p {
+  color: #c4d1ca;
+}
+
+@media (max-width: 840px) {
+  .app {
+    padding: 18px;
+  }
+
+  .heroPanel,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .scoreBox {
+    justify-items: start;
+  }
+}
