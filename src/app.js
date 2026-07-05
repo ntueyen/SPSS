@@ -10,10 +10,19 @@ const pageData = {
   descriptive: {
     title: '敘述統計',
     subtitle: 'Descriptive Statistics',
-    purpose: '用於整理樣本資料的集中趨勢、離散情形與分布型態，通常是所有實驗資料分析的第一步。',
-    timing: '適用於描述各組前測、後測、背景變項與量表得分概況，並檢查是否有極端值、輸入錯誤或分布異常。',
-    assumptions: ['依研究目的選擇平均數、標準差、中位數、百分比或圖形。', '若後續要進行推論統計，應同步檢視常態性、離群值與遺漏值。'],
-    steps: ['開啟資料檔，確認每一個變項的名稱、測量層級與數值標籤設定正確。', '選擇 Analyze > Descriptive Statistics > Descriptives。', '將欲分析的連續變項移到 Variable(s) 欄位。', '點選 Options，勾選 Mean、Std. deviation、Minimum、Maximum；需要時加入 Skewness 與 Kurtosis。', '按 Continue，再按 OK 產生輸出。', '在論文撰寫時，以表格呈現各組平均數與標準差，並說明樣本數。'],
+    purpose: '用於整理樣本資料的集中趨勢、離散情形與分布型態，通常是所有實驗資料分析的第一步。本頁另補充偏態與峰度的取得方式，協助研究者檢查資料分布是否明顯偏離常態。',
+    timing: '適用於描述各組前測、後測、背景變項與量表得分概況，並檢查是否有極端值、輸入錯誤或分布異常。偏態與峰度常用於常態性初步檢查，特別是在後續要進行 T 檢定、ANOVA 或迴歸分析之前。',
+    assumptions: ['依研究目的選擇平均數、標準差、中位數、百分比或圖形。', '若後續要進行推論統計，應同步檢視常態性、離群值與遺漏值。', '偏態（Skewness）接近 0 代表分布較對稱；峰度（Kurtosis）接近 0 代表分布形態接近常態分布的尖峭程度。'],
+    stepGroups: [
+      {
+        title: '方法一：取得平均數、標準差、最小值、最大值、偏態與峰度',
+        steps: ['開啟資料檔，確認每一個變項的名稱、測量層級與數值標籤設定正確。', '選擇 Analyze（分析） > Descriptive Statistics（描述統計） > Descriptives（描述）。', '將欲分析的連續變項移到 Variable(s)（變數）欄位。', '點選 Options（選項），勾選 Mean（平均數）、Std. deviation（標準差）、Minimum（最小值）、Maximum（最大值）、Skewness（偏態）與 Kurtosis（峰度）。', '按 Continue（繼續），再按 OK（確定）產生輸出。', '在輸出表中檢視 Skewness（偏態）與 Kurtosis（峰度），並搭配其標準誤初步判斷分布是否明顯偏離常態。'],
+      },
+      {
+        title: '方法二：搭配圖形檢查分布型態',
+        steps: ['選擇 Analyze（分析） > Descriptive Statistics（描述統計） > Explore（探索）。', '將連續變項移到 Dependent List（依變項清單）；若需分組檢查，將組別變項放入 Factor List（因子清單）。', '點選 Plots（圖形），勾選 Histogram（直方圖）與 Normality plots with tests（常態圖與檢定）。', '按 Continue（繼續），再按 OK（確定）產生輸出。', '綜合判讀直方圖、常態 Q-Q 圖、偏態與峰度；若分布明顯偏態，可考慮資料轉換、穩健統計或非參數方法。'],
+      },
+    ],
     screenshot: { src: 'https://sscc.wisc.edu/sscc/pubs/spss/classintro/screenshots/spss_students2/SPSS12Desc.jpg', caption: 'SPSS Descriptives 對話框，來源：UW–Madison SSCC。' },    videos: [
       { title: "一夜。統計學：敘述統計", url: "https://www.youtube.com/watch?v=k7ihFw_tiro", views: "觀看次數：133,047次", summary: "介紹敘述統計的基本概念與 SPSS 操作，適合先建立平均數、標準差與資料分布檢視的基礎。" },
       { title: "SPSS 基本操作：資料整理、描述性統計", url: "https://www.youtube.com/watch?v=3y9AuJaHP8A", views: "觀看次數：40,032次", summary: "示範資料整理與描述性統計流程，適合作為研究生初次整理問卷或實驗資料時的操作參考。" },
@@ -24,11 +33,24 @@ const pageData = {
   },
   ttest: {
     title: 'T 檢定',
-    subtitle: 'T Test',
-    purpose: '用於比較兩個平均數是否具有統計上的顯著差異，可分為單一樣本、獨立樣本與相依樣本 T 檢定。',
-    timing: '實驗研究常用於比較實驗組與控制組後測差異，或比較同一組學生前測與後測的平均數差異。',
-    assumptions: ['依研究設計選擇獨立樣本或相依樣本 T 檢定。', '連續依變項宜近似常態；獨立樣本 T 檢定需檢查變異數同質性。', '若前測已存在顯著差異，宜考慮 ANCOVA，而非只比較後測。'],
-    steps: ['確認分組變項已以數字或文字清楚區分兩組。', '選擇 Analyze > Compare Means > Independent-Samples T Test；若為前後測同一批受試者，改選 Paired-Samples T Test。', '將依變項移至 Test Variable(s)。', '將分組變項移至 Grouping Variable，點 Define Groups 輸入兩組代碼。', '按 Continue，再按 OK。', '先閱讀 Levene’s Test，再依 Equal variances assumed 或 not assumed 的列判讀 t、df 與 p 值。'],
+    subtitle: 'One-Sample, Paired-Samples, and Independent-Samples T Tests',
+    purpose: 'T 檢定用於檢驗平均數是否與特定標準值不同，或比較兩個平均數是否具有統計上的顯著差異。依研究設計可區分為單一樣本 T 檢定、相依樣本 T 檢定與獨立樣本 T 檢定。',
+    timing: '單一樣本 T 檢定適用於比較一組樣本平均數與理論值或標準值；相依樣本 T 檢定適用於同一批受試者的前後測或配對資料；獨立樣本 T 檢定適用於比較兩個彼此獨立群組的平均數，例如實驗組與控制組。',
+    assumptions: ['依研究設計先判斷資料是單組、配對重複測量，或兩個獨立群組。', '依變項宜為連續變項，且各組或差異分數宜近似常態。', '獨立樣本 T 檢定需檢查變異數同質性，並依 Levene’s Test（Levene 變異數同質性檢定）結果選擇正確列判讀。', '若兩組前測已存在明顯差異，宜考慮 ANCOVA（共變數分析），而非只比較後測。'],
+    stepGroups: [
+      {
+        title: '1. 單一樣本 T 檢定（One-Sample T Test）',
+        steps: ['適用情境：檢驗某一組樣本平均數是否不同於特定標準值，例如檢驗學生平均分數是否高於量表中點或既定通過標準。', '選擇 Analyze（分析） > Compare Means（比較平均數） > One-Sample T Test（單一樣本 T 檢定）。', '將欲檢定的連續變項移到 Test Variable(s)（檢定變項）欄位。', '在 Test Value（檢定值）輸入欲比較的標準值，例如 3、60 或其他理論值。', '按 OK（確定）產生輸出，判讀 t 值、df（自由度）、Sig.（顯著性）與平均差異。'],
+      },
+      {
+        title: '2. 相依樣本 T 檢定（Paired-Samples T Test）',
+        steps: ['適用情境：比較同一批受試者在兩個時間點或兩種條件下的平均數，例如前測與後測。', '選擇 Analyze（分析） > Compare Means（比較平均數） > Paired-Samples T Test（相依樣本 T 檢定）。', '將成對變項分別放入 Paired Variables（成對變項）欄位，例如 pretest（前測）與 posttest（後測）。', '確認每一列資料代表同一位受試者，且兩個變項的配對關係正確。', '按 OK（確定）產生輸出，判讀 Paired Samples Test（相依樣本檢定）表中的 t 值、df（自由度）與 Sig.（顯著性）。'],
+      },
+      {
+        title: '3. 獨立樣本 T 檢定（Independent-Samples T Test）',
+        steps: ['適用情境：比較兩個互不重疊群組的平均數，例如實驗組與控制組、男生與女生。', '確認分組變項已以數字或文字清楚區分兩組。', '選擇 Analyze（分析） > Compare Means（比較平均數） > Independent-Samples T Test（獨立樣本 T 檢定）。', '將依變項移至 Test Variable(s)（檢定變項），將分組變項移至 Grouping Variable（分組變項）。', '點選 Define Groups（定義組別），輸入兩組代碼，例如 1 與 2。', '按 Continue（繼續），再按 OK（確定）。先閱讀 Levene’s Test（Levene 變異數同質性檢定），再依 Equal variances assumed（假設變異數相等）或 Equal variances not assumed（不假設變異數相等）列判讀 t、df 與 p 值。'],
+      },
+    ],
     screenshot: { src: 'https://sscc.wisc.edu/sscc/pubs/spss/classintro/screenshots/spss_students2/SPSS31Ttest.jpg', caption: 'SPSS Independent-Samples T Test 對話框，來源：UW–Madison SSCC。' },    videos: [
       { title: "一夜。統計學：獨立樣本t檢定", url: "https://www.youtube.com/watch?v=lKo0fTmDyQI", views: "觀看次數：218,828次", summary: "說明獨立樣本 t 檢定的概念、適用情境與 SPSS 操作，適合比較實驗組與控制組平均數差異。" },
       { title: "【謝章升專欄】SPSS教學-獨立樣本t檢定怎麼做", url: "https://www.youtube.com/watch?v=Q4AwLOldoiY", views: "觀看次數：117,790次", summary: "以 SPSS 操作示範獨立樣本 t 檢定，適合快速掌握分組變項、檢定變項與結果判讀方式。" },
@@ -43,7 +65,7 @@ const pageData = {
     purpose: '用於比較三組以上平均數是否具有顯著差異，是處理單一類別自變項與連續依變項的常見方法。',
     timing: '適用於比較不同教學法、不同教材版本或不同處理組別在學習成效上的差異。',
     assumptions: ['觀察值彼此獨立。', '各組依變項近似常態。', '各組變異數具同質性；若違反，可考慮 Welch ANOVA。', '若整體 F 檢定顯著，需進一步進行事後比較。'],
-    steps: ['選擇 Analyze > Compare Means > One-Way ANOVA。', '將連續依變項放入 Dependent List。', '將組別變項放入 Factor。', '點選 Options，勾選 Descriptive 與 Homogeneity of variance test。', '點選 Post Hoc，依變異數同質性選擇 Tukey、Bonferroni 或 Games-Howell。', '按 OK，依 F 值、p 值與事後比較結果判讀組間差異。'],
+    steps: ['選擇 Analyze（分析） > Compare Means（比較平均數） > One-Way ANOVA（單因子變異數分析）。', '將連續依變項放入 Dependent List（依變項清單）。', '將組別變項放入 Factor（因子）。', '點選 Options（選項），勾選 Descriptive（描述統計）與 Homogeneity of variance test（變異數同質性檢定）。', '點選 Post Hoc（事後比較），依變異數同質性選擇 Tukey、Bonferroni 或 Games-Howell。', '按 OK（確定），依 F 值、p 值與事後比較結果判讀組間差異。'],
     screenshot: { src: 'https://sscc.wisc.edu/sscc/pubs/spss/classintro/screenshots/spss_students2/SPSS39Anova.jpg', caption: 'SPSS ANOVA / GLM 對話框示例，來源：UW–Madison SSCC。' },    videos: [
       { title: "一夜。統計學：單因子變異數分析&事後檢定", url: "https://www.youtube.com/watch?v=vEIJuQTO8ys", views: "觀看次數：199,471次", summary: "介紹單因子 ANOVA 與事後檢定，適合三組以上平均數比較與 SPSS 結果判讀。" },
       { title: "【謝章升專欄】SPSS教學-單變量分析ANOVA怎麼做", url: "https://www.youtube.com/watch?v=seLlVK77PVw", views: "觀看次數：103,248次", summary: "示範 SPSS 單變量 ANOVA 操作流程，適合學習變異數分析選單設定與輸出表判讀。" },
@@ -58,7 +80,7 @@ const pageData = {
     purpose: '在比較組別平均數時，同時控制一個或多個連續共變項，以調整組間原始差異並提高估計精確度。',
     timing: '實驗研究常用於控制前測分數、先備能力或背景能力後，比較不同教學處理對後測表現的影響。',
     assumptions: ['共變項與依變項需具線性關係。', '各組迴歸斜率需同質。', '依變項殘差宜近似常態且變異數同質。', '共變項應在處理前測得，且不應受到實驗處理影響。'],
-    steps: ['選擇 Analyze > General Linear Model > Univariate。', '將後測或結果變項放入 Dependent Variable。', '將組別變項放入 Fixed Factor(s)。', '將前測或欲控制的連續變項放入 Covariate(s)。', '點選 Model，可先檢查 Factor × Covariate 交互作用以確認迴歸斜率同質性。', '點選 Options，勾選 Descriptive statistics、Estimates of effect size 與 Homogeneity tests。', '按 OK，判讀調整後平均數、組別主效果與偏 Eta 平方。'],
+    steps: ['選擇 Analyze（分析） > General Linear Model（一般線性模型） > Univariate（單變量）。', '將後測或結果變項放入 Dependent Variable（依變項）。', '將組別變項放入 Fixed Factor(s)（固定因子）。', '將前測或欲控制的連續變項放入 Covariate(s)（共變項）。', '點選 Model（模式），可先檢查 Factor（因子） × Covariate（共變項）交互作用以確認迴歸斜率同質性。', '點選 Options（選項），勾選 Descriptive statistics（描述統計）、Estimates of effect size（效果量估計）與 Homogeneity tests（同質性檢定）。', '按 OK（確定），判讀調整後平均數、組別主效果與偏 Eta 平方。'],
     screenshot: { src: 'https://statistics.laerd.com/spss-tutorials/img/a/one-way-ancova-glm-univariate-dialogue-box-v25-and-above.png', caption: 'SPSS Univariate ANCOVA 對話框，來源：Laerd Statistics。' },    videos: [
       { title: "Analysis of Covariance (ANCOVA) - SPSS (part 1)", url: "https://www.youtube.com/watch?v=_uYASFVUNpQ", views: "觀看次數：368,117次", summary: "英文教學影片，完整示範 ANCOVA 在 SPSS 中的設定流程，適合補強共變項與組別效果的操作理解。" },
       { title: "ANCOVA in SPSS", url: "https://www.youtube.com/watch?v=1nL9yTCLPRs", views: "觀看次數：152,459次", summary: "說明如何在 SPSS 執行 ANCOVA，並涵蓋迴歸斜率同質性等假設檢核，適合進階使用者參考。" },
@@ -67,13 +89,28 @@ const pageData = {
       { title: "CHAP15共變數分析—屏東大學陳正昌講授", url: "https://www.youtube.com/watch?v=mrboblG_8xw", views: "觀看次數：16,119次", summary: "以統計分析教材章節方式講解共變數分析，適合想理解 ANCOVA 理論背景與分析詮釋的學習者。" },
     ],
   },
+  twoway: {
+    title: '二因子變異數分析',
+    subtitle: 'Two-Way Analysis of Variance',
+    purpose: '二因子變異數分析用於同時檢驗兩個類別自變項對一個連續依變項的影響，並可檢查兩個自變項之間是否存在交互作用。',
+    timing: '適用於研究者同時關心兩個因素的效果，例如教學法（傳統教學、數位教學）與性別（男、女）是否影響學習成效，以及教學法效果是否會因性別而不同。',
+    assumptions: ['依變項為連續變項，兩個自變項為類別變項。', '各組觀察值彼此獨立。', '各組依變項宜近似常態，且各組變異數具同質性。', '若交互作用達顯著，應優先解釋交互作用，再進一步檢視單純主要效果。'],
+    steps: ['選擇 Analyze（分析） > General Linear Model（一般線性模型） > Univariate（單變量）。', '將連續結果變項放入 Dependent Variable（依變項）。', '將兩個類別自變項放入 Fixed Factor(s)（固定因子）。', '點選 Model（模式），通常保留 Full factorial（完整因子模式），以同時估計兩個主要效果與交互作用。', '點選 Options（選項），將兩個因子與其交互作用移到 Display Means for（顯示平均數）欄位，並勾選 Descriptive statistics（描述統計）、Estimates of effect size（效果量估計）與 Homogeneity tests（同質性檢定）。', '若需要事後比較，點選 Post Hoc（事後比較），針對水準超過兩組的因子選擇 Tukey、Bonferroni 或 Games-Howell 等方法。', '按 OK（確定）產生輸出。判讀時先看 Tests of Between-Subjects Effects（受試者間效應檢定）中的交互作用；若交互作用顯著，再進一步檢視單純主要效果或分組圖形。'],
+    screenshot: { src: 'https://sscc.wisc.edu/sscc/pubs/spss/classintro/screenshots/spss_students2/SPSS39Anova.jpg', caption: 'SPSS GLM / ANOVA 對話框示例，來源：UW–Madison SSCC。' },    videos: [
+      { title: "一夜。統計學：如何使用SPSS進行二因子變異數分析 & 單純主要效果檢定", url: "https://www.youtube.com/watch?v=3xtVizcP7g0", views: "觀看次數：62,806次", summary: "示範如何使用 SPSS 進行二因子變異數分析與單純主要效果檢定，最貼近本分頁操作需求。" },
+      { title: "【謝章升專欄】SPSS教學-單變量分析ANOVA怎麼做", url: "https://www.youtube.com/watch?v=seLlVK77PVw", views: "觀看次數：103,248次", summary: "介紹 SPSS 單變量 ANOVA 操作，可作為理解 GLM Univariate 選單與因子設定的基礎。" },
+      { title: "變異數分析（ANOVA）是什麽？七分鐘帶你掌握各類變異數分析基礎！", url: "https://www.youtube.com/watch?v=BDDyuahrN2s", views: "觀看次數：18,836次", summary: "整理單向、兩因素與重複量數變異數分析的概念，適合在操作前釐清不同 ANOVA 類型。" },
+      { title: "【統計分析】：10 SPSS ANOVA檢定分析", url: "https://www.youtube.com/watch?v=hTnq2j7bwBk", views: "觀看次數：17,882次", summary: "以 SPSS ANOVA 檢定分析為主，適合補充變異數分析輸出結果與基本判讀方式。" },
+      { title: "SPSS (變異數分析概念講解及1-Way MANOVA分析操作演練及判讀)", url: "https://www.youtube.com/watch?v=4H9RucuXINA", views: "觀看次數：5,014次", summary: "雖含其他變異數分析主題，但有助於理解 SPSS GLM 架構與變異數分析結果判讀脈絡。" },
+    ],
+  },
   pearson: {
     title: '皮爾森相關係數',
     subtitle: 'Pearson Correlation Coefficient',
     purpose: '用於檢驗兩個連續變項之間線性關係的方向與強度，相關係數 r 介於 -1 與 1 之間。',
     timing: '適用於分析學習動機與學習成效、科技接受度與使用意願、前測與後測分數之間的線性關係。',
     assumptions: ['兩變項宜為連續變項。', '關係型態需接近線性。', '應檢查散佈圖與離群值。', '相關不代表因果，尤其不得直接解讀為實驗效果。'],
-    steps: ['選擇 Analyze > Correlate > Bivariate。', '將兩個以上欲分析的連續變項移至 Variables。', '在 Correlation Coefficients 勾選 Pearson。', '依研究假設選擇 Two-tailed 或 One-tailed；通常採 Two-tailed。', '可勾選 Flag significant correlations。', '按 OK，判讀 r 值方向、效果量大小與顯著性。'],
+    steps: ['選擇 Analyze（分析） > Correlate（相關） > Bivariate（雙變量）。', '將兩個以上欲分析的連續變項移至 Variables（變項）。', '在 Correlation Coefficients（相關係數）勾選 Pearson（皮爾森）。', '依研究假設選擇 Two-tailed（雙尾）或 One-tailed（單尾）；通常採 Two-tailed（雙尾）。', '可勾選 Flag significant correlations（標記顯著相關）。', '按 OK（確定），判讀 r 值方向、效果量大小與顯著性。'],
     screenshot: { src: 'https://sscc.wisc.edu/sscc/pubs/spss/classintro/screenshots/spss_students2/SPSS25Corr.jpg', caption: 'SPSS Bivariate Correlations 對話框，來源：UW–Madison SSCC。' },    videos: [
       { title: "一夜。統計學：相關分析", url: "https://www.youtube.com/watch?v=_MeToCBVkdY", views: "觀看次數：132,243次", summary: "介紹相關分析的統計概念與 SPSS 操作，適合理解 Pearson 相關係數的方向、強度與顯著性。" },
       { title: "SPSS教學, 相關分析", url: "https://www.youtube.com/watch?v=GPNNVgkeY4w", views: "觀看次數：43,618次", summary: "以 SPSS 操作方式示範相關分析，適合學習如何選取變項並判讀相關矩陣。" },
@@ -88,7 +125,7 @@ const pageData = {
     purpose: '用於從多個觀察變項中萃取潛在構面，常見於量表發展、建構效度檢驗與題項縮減。',
     timing: '適用於問卷量表題項眾多，研究者希望確認題項是否可歸納為若干構面時。',
     assumptions: ['樣本數需足夠，且題項之間應有合理相關。', '需檢查 KMO 與 Bartlett 球形檢定。', '需決定萃取方法、因素數與轉軸方式。', '因素命名應回到理論與題項內容，而非只依統計結果。'],
-    steps: ['選擇 Analyze > Dimension Reduction > Factor。', '將量表題項移入 Variables。', '點選 Descriptives，勾選 KMO and Bartlett’s test of sphericity。', '點選 Extraction，選擇 Principal components 或 Principal axis factoring，並勾選 Scree plot。', '點選 Rotation，依構面是否相關選擇 Varimax 或 Oblimin。', '點選 Options，設定排序與抑制低於特定門檻的負荷量，例如 .40。', '按 OK，判讀 KMO、解釋變異量、陡坡圖與轉軸後因素負荷量。'],
+    steps: ['選擇 Analyze（分析） > Dimension Reduction（降維） > Factor（因素）。', '將量表題項移入 Variables（變項）。', '點選 Descriptives（描述），勾選 KMO and Bartlett’s test of sphericity（KMO 與 Bartlett 球形檢定）。', '點選 Extraction（萃取），選擇 Principal components（主成分）或 Principal axis factoring（主軸因子法），並勾選 Scree plot（陡坡圖）。', '點選 Rotation（轉軸），依構面是否相關選擇 Varimax（最大變異法）或 Oblimin（斜交轉軸）。', '點選 Options（選項），設定排序與抑制低於特定門檻的負荷量，例如 .40。', '按 OK（確定），判讀 KMO、解釋變異量、陡坡圖與轉軸後因素負荷量。'],
     screenshot: { src: 'https://www.statisticssolutions.com/wp-content/uploads/2010/12/318-e1293739743415.png', caption: 'SPSS Factor Analysis Extraction 對話框，來源：Statistics Solutions。' },    videos: [
       { title: "SPSS PCA (Part 1 KMO Measure and Bartlett Test for Sphericity)", url: "https://www.youtube.com/watch?v=efA-syfE6_U", views: "觀看次數：168,670次", summary: "英文影片，聚焦 KMO 與 Bartlett 檢定，適合補強因素分析前置檢核與取樣適切性的理解。" },
       { title: "一夜。統計學：探索性因素分析", url: "https://www.youtube.com/watch?v=sisqqv3gYBs", views: "觀看次數：139,387次", summary: "中文教學介紹探索性因素分析與 SPSS 報表判讀，適合量表建構與構面萃取情境。" },
@@ -103,7 +140,7 @@ const pageData = {
     purpose: '用於同時檢驗組別在多個相關依變項上的整體差異，可降低多次單變量檢定造成的第一類錯誤膨脹。',
     timing: '適用於實驗處理可能同時影響多個結果變項，例如學習成效、學習動機與認知負荷。',
     assumptions: ['多個依變項需具合理相關，但不宜高度共線。', '需注意多變量常態、共變異數矩陣同質性與離群值。', '若 MANOVA 顯著，應進一步檢視單變量 ANOVA 與事後比較。'],
-    steps: ['選擇 Analyze > General Linear Model > Multivariate。', '將多個連續依變項移入 Dependent Variables。', '將組別變項移入 Fixed Factor(s)。', '點選 Options，勾選 Descriptive statistics、Estimates of effect size 與 Homogeneity tests。', '需要呈現組別趨勢時，點選 Plots 設定剖面圖。', '按 OK，先判讀 Pillai’s Trace、Wilks’ Lambda 等多變量檢定，再檢視各依變項的後續結果。'],
+    steps: ['選擇 Analyze（分析） > General Linear Model（一般線性模型） > Multivariate（多變量）。', '將多個連續依變項移入 Dependent Variables（依變項）。', '將組別變項移入 Fixed Factor(s)（固定因子）。', '點選 Options（選項），勾選 Descriptive statistics（描述統計）、Estimates of effect size（效果量估計）與 Homogeneity tests（同質性檢定）。', '需要呈現組別趨勢時，點選 Plots（圖形）設定剖面圖。', '按 OK（確定），先判讀 Pillai’s Trace（Pillai 跡）與 Wilks’ Lambda（Wilks Lambda）等多變量檢定，再檢視各依變項的後續結果。'],
     screenshot: { src: 'https://statistics.laerd.com/spss-tutorials/img/owm/one-way-MANOVA-glm-multivariate-dialogue-box-v25-and-above.png', caption: 'SPSS Multivariate 對話框，來源：Laerd Statistics。' },    videos: [
       { title: "Conducting a MANOVA in SPSS with Assumption Testing", url: "https://www.youtube.com/watch?v=rCgeWeXRtDs", views: "觀看次數：102,944次", summary: "英文影片，示範 MANOVA 與假設檢核，適合補強多依變項分析前的檢查與結果判讀。" },
       { title: "Multivariate Analysis of Variance (MANOVA) in SPSS Tutorial (SPSS Tutorial Video #22) - GLM", url: "https://www.youtube.com/watch?v=HomeGINBnuA", views: "觀看次數：90,755次", summary: "以 SPSS GLM 程序示範 MANOVA，適合理解多變量檢定表與後續單變量結果的關聯。" },
@@ -118,7 +155,7 @@ const pageData = {
     purpose: '用於在多個預測變項中，以統計準則逐步選入或移除變項，建立對依變項具有解釋力的迴歸模型。',
     timing: '適用於探索哪些學習背景、態度或行為變項能預測學習成效；但若已有明確理論模型，宜優先採階層迴歸或強迫進入法。',
     assumptions: ['依變項為連續變項。', '需檢查線性、獨立性、常態性、等變異性與多元共線性。', '逐步法容易受樣本特性影響，應避免過度解讀為理論因果模型。', '論文中需清楚說明選入與排除準則。'],
-    steps: ['選擇 Analyze > Regression > Linear。', '將結果變項移入 Dependent。', '將候選預測變項移入 Independent(s)。', '在 Method 下拉選單選擇 Stepwise。', '點選 Statistics，勾選 Estimates、Model fit、Collinearity diagnostics 與 Durbin-Watson。', '點選 Plots，檢查殘差圖；需要時儲存標準化殘差。', '按 OK，依 Model Summary、ANOVA、Coefficients 與 Excluded Variables 判讀模型。'],
+    steps: ['選擇 Analyze（分析） > Regression（迴歸） > Linear（線性）。', '將結果變項移入 Dependent（依變項）。', '將候選預測變項移入 Independent(s)（自變項）。', '在 Method（方法）下拉選單選擇 Stepwise（逐步）。', '點選 Statistics（統計量），勾選 Estimates（估計值）、Model fit（模型適配）、Collinearity diagnostics（共線性診斷）與 Durbin-Watson。', '點選 Plots（圖形），檢查殘差圖；需要時儲存標準化殘差。', '按 OK（確定），依 Model Summary（模型摘要）、ANOVA（變異數分析）、Coefficients（係數）與 Excluded Variables（排除變項）判讀模型。'],
     screenshot: { src: 'https://dw1.s81c.com//IMWUC/MessageImages/d90825f3e18e4780993fcbdb43f8bdcf.png', caption: 'SPSS Linear Regression Method 下拉選單中的 Stepwise，來源：IBM Community。' },    videos: [
       { title: "一夜。統計學：迴歸分析", url: "https://www.youtube.com/watch?v=aNIChQUY-DA", views: "觀看次數：186,107次", summary: "介紹迴歸分析在論文假設檢定中的用途，適合作為逐步多元迴歸前的概念基礎。" },
       { title: "陈老师spss数据分析教程之spss多元线性回归分析", url: "https://www.youtube.com/watch?v=w-f7hXWlCAs", views: "觀看次數：97,852次", summary: "示範 SPSS 多元線性迴歸分析，適合參考依變項、預測變項與模型輸出的基本設定。" },
@@ -129,7 +166,7 @@ const pageData = {
   },
 };
 
-const order = ['overview', 'glossary', 'descriptive', 'ttest', 'anova', 'ancova', 'pearson', 'factor', 'manova', 'regression'];
+const order = ['overview', 'glossary', 'descriptive', 'ttest', 'anova', 'ancova', 'twoway', 'pearson', 'factor', 'manova', 'regression'];
 const labels = {
   overview: '首頁總覽',
   glossary: '名詞解釋',
@@ -137,6 +174,7 @@ const labels = {
   ttest: 'T 檢定',
   anova: 'ANOVA',
   ancova: 'ANCOVA',
+  twoway: '二因子 ANOVA',
   pearson: 'Pearson 相關',
   factor: '因素分析',
   manova: 'MANOVA',
@@ -148,6 +186,7 @@ const summary = [
   ['T 檢定', '比較兩個平均數', '兩組後測差異、同一組前後測差異。'],
   ['單因子 ANOVA', '比較三組以上平均數', '三種以上教學處理或組別比較。'],
   ['ANCOVA', '控制共變項後比較組別', '控制前測或先備能力後比較後測。'],
+  ['二因子 ANOVA', '檢驗兩個因子及交互作用', '同時比較兩個類別自變項對連續依變項的影響。'],
   ['Pearson 相關', '檢驗兩連續變項線性關係', '分析動機、態度與成效的關聯。'],
   ['因素分析', '萃取潛在構面', '量表建構、效度檢核與題項縮減。'],
   ['MANOVA', '同時比較多個依變項', '多個學習成果或心理變項整體差異。'],
@@ -352,6 +391,23 @@ function renderGlossary() {
   `;
 }
 
+function renderSteps(page) {
+  if (page.stepGroups) {
+    return page.stepGroups
+      .map(
+        (group) => `
+          <section class="step-group">
+            <h3>${group.title}</h3>
+            <ol class="steps">${group.steps.map((item) => `<li>${item}</li>`).join('')}</ol>
+          </section>
+        `,
+      )
+      .join('');
+  }
+
+  return `<ol class="steps">${page.steps.map((item) => `<li>${item}</li>`).join('')}</ol>`;
+}
+
 function renderMethod(page) {
   return `
     <section class="lesson-overview">
@@ -373,7 +429,7 @@ function renderMethod(page) {
     <section class="section-block activity-layout">
       <article class="activity-panel">
         <h2>SPSS 操作步驟</h2>
-        <ol class="steps">${page.steps.map((item) => `<li>${item}</li>`).join('')}</ol>
+        ${renderSteps(page)}
       </article>
       <figure class="spss-shot">
         <img src="${page.screenshot.src}" alt="${page.title} 的 SPSS 操作畫面截圖" loading="lazy" />
