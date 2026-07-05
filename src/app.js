@@ -77,10 +77,23 @@ const pageData = {
   ancova: {
     title: '共變數分析（ANCOVA）',
     subtitle: 'Analysis of Covariance',
-    purpose: '在比較組別平均數時，同時控制一個或多個連續共變項，以調整組間原始差異並提高估計精確度。',
-    timing: '實驗研究常用於控制前測分數、先備能力或背景能力後，比較不同教學處理對後測表現的影響。',
-    assumptions: ['共變項與依變項需具線性關係。', '各組迴歸斜率需同質。', '依變項殘差宜近似常態且變異數同質。', '共變項應在處理前測得，且不應受到實驗處理影響。'],
-    steps: ['選擇 Analyze（分析） > General Linear Model（一般線性模型） > Univariate（單變量）。', '將後測或結果變項放入 Dependent Variable（依變項）。', '將組別變項放入 Fixed Factor(s)（固定因子）。', '將前測或欲控制的連續變項放入 Covariate(s)（共變項）。', '點選 Model（模式），可先檢查 Factor（因子） × Covariate（共變項）交互作用以確認迴歸斜率同質性。', '點選 Options（選項），勾選 Descriptive statistics（描述統計）、Estimates of effect size（效果量估計）與 Homogeneity tests（同質性檢定）。', '按 OK（確定），判讀調整後平均數、組別主效果與偏 Eta 平方。'],
+    purpose: '共變數分析用於在比較組別平均數時，控制一個或多個連續共變項，例如前測分數或先備能力。正式執行 ANCOVA 前，必須先檢查共變項與組別之間的交互作用，以確認迴歸斜率同質性。',
+    timing: '若迴歸斜率同質性檢定未達顯著，代表共變項與依變項的關係在不同組別間大致平行，可直接進行標準 ANCOVA。若組別 × 共變項交互作用達顯著，表示斜率不同，標準 ANCOVA 的調整後平均數不宜直接解讀，應改採 Johnson-Neyman 分析、調節迴歸或單純斜率等方法。',
+    assumptions: ['共變項與依變項需具線性關係。', '各組迴歸斜率需同質；此假設以組別 × 共變項交互作用進行檢查。', '依變項殘差宜近似常態且變異數同質。', '共變項應在實驗處理前測得，且不應受到實驗處理影響。', '若迴歸斜率同質性未通過，不宜只報告傳統 ANCOVA 的調整後平均數。'],
+    stepGroups: [
+      {
+        title: '1. 先檢查迴歸斜率同質性',
+        steps: ['選擇 Analyze（分析） > General Linear Model（一般線性模型） > Univariate（單變量）。', '將後測或結果變項放入 Dependent Variable（依變項）。', '將組別變項放入 Fixed Factor(s)（固定因子）。', '將前測或欲控制的連續變項放入 Covariate(s)（共變項）。', '點選 Model（模式），選擇 Custom（自訂），將組別主效果、共變項主效果，以及組別 × 共變項交互作用放入模型。', '點選 Options（選項），勾選 Descriptive statistics（描述統計）、Estimates of effect size（效果量估計）與 Homogeneity tests（同質性檢定）。', '按 OK（確定）後，查看 Tests of Between-Subjects Effects（受試者間效應檢定）中「組別 × 共變項」的 Sig.（顯著性）。若 p > .05，表示迴歸斜率同質性可接受；若 p ≤ .05，表示斜率不同。'],
+      },
+      {
+        title: '2. 若迴歸斜率同質性通過：執行標準 ANCOVA',
+        steps: ['重新進入 Analyze（分析） > General Linear Model（一般線性模型） > Univariate（單變量）。', '設定 Dependent Variable（依變項）、Fixed Factor(s)（固定因子）與 Covariate(s)（共變項）。', '點選 Model（模式），移除組別 × 共變項交互作用，只保留組別主效果與共變項主效果。', '點選 Options（選項），將組別變項移到 Display Means for（顯示平均數），勾選 Compare main effects（比較主要效果），並依需要選擇 Bonferroni（邦費羅尼）校正。', '同時勾選 Parameter estimates（參數估計）、Descriptive statistics（描述統計）、Estimates of effect size（效果量估計）與 Homogeneity tests（同質性檢定）。', '按 OK（確定）後，判讀組別主效果、調整後平均數與偏 Eta 平方；報告時應說明已控制的共變項。'],
+      },
+      {
+        title: '3. 若迴歸斜率同質性未通過：改採 Johnson-Neyman 或替代分析',
+        steps: ['先在研究報告中明確說明組別 × 共變項交互作用達顯著，傳統 ANCOVA 的平行斜率假設不成立，因此不宜直接比較單一調整後平均數。', 'Johnson-Neyman（詹森—紐曼）分析的目的，是找出共變項落在哪些數值區間時，組別差異達顯著或未達顯著。標準 SPSS 選單通常沒有內建 Johnson-Neyman 分析。', '替代方案一：安裝 PROCESS macro for SPSS，將結果變項設為 Y，將組別以虛擬變項表示為 X，將共變項設為 W，建立 X × W 交互作用模型，並輸出 conditional effects（條件效果）與 Johnson-Neyman 區間。若組別超過兩組，需以虛擬變項分別建立比較。', '替代方案二：將資料從 SPSS 匯出為 CSV，使用 R 的 interactions、jtools 或 int3ract 等套件進行 Johnson-Neyman 或條件效果分析。基本模型可寫為 lm(後測 ~ 組別 * 前測)，再針對組別效果在前測不同區間的顯著性進行檢查。', '替代方案三：在 SPSS 中改做調節迴歸。先將共變項中心化，建立組別虛擬變項與「組別 × 共變項」交互作用，再選擇 Analyze（分析） > Regression（迴歸） > Linear（線性）檢驗交互作用，並報告低、中、高共變項水準下的單純斜率或條件組別差異。', '替代方案四：若研究目的仍以教學處理差異為主，可依理論上有意義的共變項區間進行分層描述或敏感度分析，但應避免把分層後結果視為傳統 ANCOVA 的替代證明。'],
+      },
+    ],
     screenshot: { src: 'https://statistics.laerd.com/spss-tutorials/img/a/one-way-ancova-glm-univariate-dialogue-box-v25-and-above.png', caption: 'SPSS Univariate ANCOVA 對話框，來源：Laerd Statistics。' },    videos: [
       { title: "Analysis of Covariance (ANCOVA) - SPSS (part 1)", url: "https://www.youtube.com/watch?v=_uYASFVUNpQ", views: "觀看次數：368,117次", summary: "英文教學影片，完整示範 ANCOVA 在 SPSS 中的設定流程，適合補強共變項與組別效果的操作理解。" },
       { title: "ANCOVA in SPSS", url: "https://www.youtube.com/watch?v=1nL9yTCLPRs", views: "觀看次數：152,459次", summary: "說明如何在 SPSS 執行 ANCOVA，並涵蓋迴歸斜率同質性等假設檢核，適合進階使用者參考。" },
@@ -92,10 +105,27 @@ const pageData = {
   twoway: {
     title: '二因子變異數分析',
     subtitle: 'Two-Way Analysis of Variance',
-    purpose: '二因子變異數分析用於同時檢驗兩個類別自變項對一個連續依變項的影響，並可檢查兩個自變項之間是否存在交互作用。',
-    timing: '適用於研究者同時關心兩個因素的效果，例如教學法（傳統教學、數位教學）與性別（男、女）是否影響學習成效，以及教學法效果是否會因性別而不同。',
-    assumptions: ['依變項為連續變項，兩個自變項為類別變項。', '各組觀察值彼此獨立。', '各組依變項宜近似常態，且各組變異數具同質性。', '若交互作用達顯著，應優先解釋交互作用，再進一步檢視單純主要效果。'],
-    steps: ['選擇 Analyze（分析） > General Linear Model（一般線性模型） > Univariate（單變量）。', '將連續結果變項放入 Dependent Variable（依變項）。', '將兩個類別自變項放入 Fixed Factor(s)（固定因子）。', '點選 Model（模式），通常保留 Full factorial（完整因子模式），以同時估計兩個主要效果與交互作用。', '點選 Options（選項），將兩個因子與其交互作用移到 Display Means for（顯示平均數）欄位，並勾選 Descriptive statistics（描述統計）、Estimates of effect size（效果量估計）與 Homogeneity tests（同質性檢定）。', '若需要事後比較，點選 Post Hoc（事後比較），針對水準超過兩組的因子選擇 Tukey、Bonferroni 或 Games-Howell 等方法。', '按 OK（確定）產生輸出。判讀時先看 Tests of Between-Subjects Effects（受試者間效應檢定）中的交互作用；若交互作用顯著，再進一步檢視單純主要效果或分組圖形。'],
+    purpose: '二因子變異數分析用於同時檢驗兩個類別自變項對一個連續依變項的影響，並可檢查兩個自變項之間是否存在交互作用。正式分析前，應先以完整因子模式檢查變異數同質性。',
+    timing: '適用於研究者同時關心兩個因素的效果，例如教學法與性別是否影響學習成效，以及教學法效果是否會因性別而不同。若交互作用不顯著，主要解釋主效果；若交互作用顯著，應進一步進行單純主效果分析。',
+    assumptions: ['依變項為連續變項，兩個自變項為類別變項。', '各組觀察值彼此獨立。', '先以完整因子模式檢查 Levene’s Test（Levene 變異數同質性檢定）；若 p > .05，變異數同質性可接受。', '若 Levene’s Test 未通過，需謹慎解讀，可考慮轉換資料、穩健方法、較保守的顯著水準或改採其他分析。', '若交互作用顯著，主效果不能單獨作為主要結論，應優先解釋單純主效果。'],
+    stepGroups: [
+      {
+        title: '1. 先以完整因子模式檢查變異數同質性',
+        steps: ['選擇 Analyze（分析） > General Linear Model（一般線性模型） > Univariate（單變量）。', '將連續結果變項放入 Dependent Variable（依變項）。', '將兩個類別自變項放入 Fixed Factor(s)（固定因子）。', '點選 Model（模式），保留 Full factorial（完整因子模式），使模型同時包含因子 A、因子 B 與 A × B 交互作用。', '點選 Options（選項），勾選 Descriptive statistics（描述統計）、Estimates of effect size（效果量估計）與 Homogeneity tests（同質性檢定）。', '按 OK（確定）後，先檢視 Levene’s Test of Equality of Error Variances（Levene 誤差變異數等同性檢定）。若 p > .05，表示變異數同質性可接受，可進一步判讀二因子 ANOVA。若 p ≤ .05，需在報告中註明違反同質性假設並採取較保守解讀或替代方法。'],
+      },
+      {
+        title: '2. 變異數同質性通過後：執行二因子變異數分析',
+        steps: ['確認仍使用 Full factorial（完整因子模式），模型需包含兩個主要效果與二者交互作用。', '在 Tests of Between-Subjects Effects（受試者間效應檢定）表中，先判讀 A × B 交互作用是否達顯著。', '若 A × B 交互作用未達顯著，表示一個因子的效果不會因另一個因子的水準不同而明顯改變，此時可進一步解釋兩個主效果。', '若 A × B 交互作用達顯著，表示一個因子的效果會隨另一個因子的水準而改變，此時應優先進行單純主效果分析。'],
+      },
+      {
+        title: '3. 若無交互作用：進行主效果分析',
+        steps: ['在 Tests of Between-Subjects Effects（受試者間效應檢定）表中分別判讀因子 A 與因子 B 的 F 值、p 值與偏 Eta 平方。', '若某一因子只有兩個水準，可直接依該因子的主效果判斷兩組平均數是否不同。', '若某一因子有三個以上水準，點選 Post Hoc（事後比較）或在 Options（選項）中勾選 Compare main effects（比較主要效果），並選擇 Bonferroni（邦費羅尼）等校正方式。', '報告時呈現各水準的平均數、標準差、F 值、p 值與效果量，並說明交互作用未達顯著，因此主效果可作為主要解釋。'],
+      },
+      {
+        title: '4. 若有交互作用：進行單純主效果分析',
+        steps: ['先繪製 Estimated Marginal Means（估計邊際平均數）或 Profile Plots（剖面圖），確認交互作用的型態。', '在 SPSS 中可使用 Split File（分割檔案）分別在另一個因子的各水準下進行單因子 ANOVA，或使用 GLM 的 EMMEANS 語法進行單純主效果比較。', '選擇 Data（資料） > Split File（分割檔案），依其中一個因子分割資料；再對另一個因子執行 Analyze（分析） > Compare Means（比較平均數） > One-Way ANOVA（單因子變異數分析）。', '若使用語法，可在 GLM 中加入 EMMEANS 指令，指定 COMPARE（比較）與 ADJ(BONFERRONI)（邦費羅尼校正），以檢驗某一因子在另一因子各水準下的簡單效果。', '報告時應以「在某一因子水準下，另一因子的效果是否顯著」來描述，避免只籠統報告整體主效果。'],
+      },
+    ],
     screenshot: { src: 'https://sscc.wisc.edu/sscc/pubs/spss/classintro/screenshots/spss_students2/SPSS39Anova.jpg', caption: 'SPSS GLM / ANOVA 對話框示例，來源：UW–Madison SSCC。' },    videos: [
       { title: "一夜。統計學：如何使用SPSS進行二因子變異數分析 & 單純主要效果檢定", url: "https://www.youtube.com/watch?v=3xtVizcP7g0", views: "觀看次數：62,806次", summary: "示範如何使用 SPSS 進行二因子變異數分析與單純主要效果檢定，最貼近本分頁操作需求。" },
       { title: "【謝章升專欄】SPSS教學-單變量分析ANOVA怎麼做", url: "https://www.youtube.com/watch?v=seLlVK77PVw", views: "觀看次數：103,248次", summary: "介紹 SPSS 單變量 ANOVA 操作，可作為理解 GLM Univariate 選單與因子設定的基礎。" },
