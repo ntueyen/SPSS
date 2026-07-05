@@ -3,6 +3,10 @@ const pageData = {
     title: '實驗研究法常用統計分析方法',
     subtitle: '研究生 SPSS 操作步驟網站教材',
   },
+  glossary: {
+    title: '名詞解釋',
+    subtitle: '量化統計常見術語',
+  },
   descriptive: {
     title: '敘述統計',
     subtitle: 'Descriptive Statistics',
@@ -125,9 +129,10 @@ const pageData = {
   },
 };
 
-const order = ['overview', 'descriptive', 'ttest', 'anova', 'ancova', 'pearson', 'factor', 'manova', 'regression'];
+const order = ['overview', 'glossary', 'descriptive', 'ttest', 'anova', 'ancova', 'pearson', 'factor', 'manova', 'regression'];
 const labels = {
   overview: '首頁總覽',
+  glossary: '名詞解釋',
   descriptive: '敘述統計',
   ttest: 'T 檢定',
   anova: 'ANOVA',
@@ -147,6 +152,94 @@ const summary = [
   ['因素分析', '萃取潛在構面', '量表建構、效度檢核與題項縮減。'],
   ['MANOVA', '同時比較多個依變項', '多個學習成果或心理變項整體差異。'],
   ['逐步多元迴歸', '探索預測變項組合', '找出學習成效的統計預測因子。'],
+];
+
+
+const glossarySections = [
+  {
+    title: '基本概念與資料型態',
+    rows: [
+      ['變項', 'Variable', '研究中可被觀察、測量或分類的特徵，例如學習成效、性別、年級或使用時間。'],
+      ['自變項', 'Independent Variable', '研究者操弄、分類或用來解釋結果的變項，在實驗研究中通常代表不同處理條件。'],
+      ['依變項', 'Dependent Variable', '研究者欲觀察或解釋的結果變項，例如後測分數、學習動機或任務表現。'],
+      ['控制變項', 'Control Variable', '研究者希望固定或納入控制的因素，以降低其對研究結果的干擾。'],
+      ['共變項', 'Covariate', '在分析中納入控制的連續變項，常見例子為前測分數或先備能力。'],
+      ['名義尺度', 'Nominal Scale', '僅用於分類且無大小順序的資料型態，例如性別、班級、組別或學校類型。'],
+      ['順序尺度', 'Ordinal Scale', '具有順序但間距不一定相等的資料型態，例如滿意度等級或排名。'],
+      ['等距尺度', 'Interval Scale', '數值間距具有意義，但沒有真正零點的資料型態，例如某些標準化量表分數。'],
+      ['比率尺度', 'Ratio Scale', '具有相等間距與真正零點的資料型態，例如時間、次數、年齡或答對題數。'],
+      ['連續變項', 'Continuous Variable', '可在範圍內取許多數值的變項，例如測驗分數、反應時間或量表總分。'],
+      ['類別變項', 'Categorical Variable', '以類別區分個體或群組的變項，例如實驗組與控制組。'],
+      ['遺漏值', 'Missing Value', '資料中未被填答、未被記錄或不適合分析的空缺值，分析前需確認其處理方式。'],
+    ],
+  },
+  {
+    title: '敘述統計學',
+    rows: [
+      ['平均數', 'Mean', '所有觀察值加總後除以樣本數，用於表示資料的集中趨勢。'],
+      ['中位數', 'Median', '將資料排序後位於中間的位置值，較不容易受到極端值影響。'],
+      ['眾數', 'Mode', '資料中出現次數最多的數值或類別，常用於類別資料描述。'],
+      ['標準差', 'Standard Deviation', '表示資料分散程度的指標，數值越大代表觀察值越分散。'],
+      ['變異數', 'Variance', '標準差的平方，用於表示資料變異程度，也是許多推論統計的基礎。'],
+      ['全距', 'Range', '最大值與最小值之差，可快速描述資料分散範圍。'],
+      ['四分位距', 'Interquartile Range', '第三四分位數與第一四分位數之差，用於描述中間 50% 資料的分散程度。'],
+      ['偏態', 'Skewness', '描述分布是否對稱的指標，正偏態與負偏態分別代表尾端方向不同。'],
+      ['峰度', 'Kurtosis', '描述分布尖峭或平坦程度的指標，可作為分布型態檢查參考。'],
+      ['次數分配', 'Frequency Distribution', '呈現各數值或類別出現次數的表格，常用於初步了解資料分布。'],
+      ['百分比', 'Percentage', '以百分率表示各類別或數值所占比例，常搭配次數分配表呈現。'],
+    ],
+  },
+  {
+    title: '推論統計學',
+    rows: [
+      ['母群體', 'Population', '研究者欲推論的完整對象集合，例如某一教育階段全部學生。'],
+      ['樣本', 'Sample', '從母群體中抽取並實際進行觀察或測量的研究對象。'],
+      ['抽樣', 'Sampling', '從母群體選取樣本的程序，其品質會影響研究結果的推論能力。'],
+      ['抽樣誤差', 'Sampling Error', '因以樣本估計母群體而產生的自然差異，通常無法完全避免。'],
+      ['標準誤', 'Standard Error', '樣本統計量抽樣分布的標準差，用於估計統計量的不確定性。'],
+      ['信賴區間', 'Confidence Interval', '以樣本資料估計母群體參數可能落入的範圍，常見為 95% 信賴區間。'],
+      ['參數', 'Parameter', '母群體中的真實數值，例如母群體平均數或母群體相關係數。'],
+      ['統計量', 'Statistic', '由樣本計算而得的數值，例如樣本平均數、樣本標準差或樣本相關係數。'],
+      ['效果量', 'Effect Size', '描述差異或關聯程度大小的指標，可補充 p 值不足以呈現的實質意義。'],
+      ['統計考驗力', 'Statistical Power', '在真有效果存在時，統計檢定能正確拒絕虛無假設的機率。'],
+    ],
+  },
+  {
+    title: '假設檢定',
+    rows: [
+      ['虛無假設', 'Null Hypothesis', '通常表示沒有差異、沒有關聯或沒有處理效果的假設。'],
+      ['對立假設', 'Alternative Hypothesis', '與虛無假設相對，表示存在差異、關聯或處理效果的研究假設。'],
+      ['顯著水準', 'Significance Level', '研究者事先設定可接受的第一類錯誤機率，常用 .05。'],
+      ['p 值', 'p-value', '在虛無假設為真時，觀察到目前或更極端結果的機率。'],
+      ['第一類錯誤', 'Type I Error', '虛無假設其實為真，但研究者錯誤地拒絕虛無假設。'],
+      ['第二類錯誤', 'Type II Error', '虛無假設其實為假，但研究者未能拒絕虛無假設。'],
+      ['單尾檢定', 'One-tailed Test', '研究假設指定效果方向時使用的檢定方式。'],
+      ['雙尾檢定', 'Two-tailed Test', '研究假設不限定方向，只檢驗是否存在差異或關聯。'],
+      ['自由度', 'Degrees of Freedom', '統計量計算中可自由變動的資訊量，常與樣本數及模型參數有關。'],
+      ['臨界值', 'Critical Value', '決定是否拒絕虛無假設的切點，取決於顯著水準與自由度。'],
+      ['信賴水準', 'Confidence Level', '信賴區間長期涵蓋母群體參數的比例，常見為 95%。'],
+    ],
+  },
+  {
+    title: 'SPSS 軟體選單上的名稱',
+    rows: [
+      ['分析', 'Analyze', 'SPSS 主要統計分析選單，多數描述統計與推論統計功能都由此進入。'],
+      ['描述統計', 'Descriptive Statistics', '用於產生次數分配、平均數、標準差與其他基本描述統計量。'],
+      ['比較平均數', 'Compare Means', '提供 T 檢定、單因子 ANOVA 等平均數比較相關功能。'],
+      ['相關', 'Correlate', '用於執行 Pearson 相關、Spearman 相關與其他相關分析。'],
+      ['迴歸', 'Regression', '提供線性迴歸、羅吉斯迴歸等模型分析功能。'],
+      ['一般線性模型', 'General Linear Model', '用於執行單變量、多變量、重複量數等 GLM 相關分析。'],
+      ['單變量', 'Univariate', 'GLM 中針對一個連續依變項進行分析的選項，可用於 ANCOVA。'],
+      ['多變量', 'Multivariate', 'GLM 中同時處理多個連續依變項的選項，可用於 MANOVA。'],
+      ['降維', 'Dimension Reduction', '用於因素分析、主成分分析等降低變項維度的程序。'],
+      ['因素', 'Factor', 'Dimension Reduction 下的因素分析功能，用於萃取潛在構面。'],
+      ['事後比較', 'Post Hoc', 'ANOVA 顯著後，用於檢查哪些組別之間存在差異的比較程序。'],
+      ['選項', 'Options', '用於設定額外輸出內容，例如描述統計、效果量、同質性檢定或信賴區間。'],
+      ['固定因子', 'Fixed Factor(s)', 'GLM 對話框中放置類別自變項或組別變項的位置。'],
+      ['共變項', 'Covariate(s)', 'GLM 對話框中放置需控制之連續變項的位置。'],
+      ['依變項', 'Dependent Variable', 'SPSS 對話框中放置研究結果變項的位置。'],
+    ],
+  },
 ];
 
 function videoList(items) {
@@ -208,6 +301,57 @@ function renderOverview() {
   `;
 }
 
+
+function renderGlossary() {
+  return `
+    <section class="intro glossary-intro" aria-labelledby="glossary-title">
+      <article>
+        <h2 id="glossary-title">量化統計常見術語</h2>
+        <p>本頁整理研究生閱讀統計分析、撰寫論文與操作 SPSS 時常見的術語。各表格依概念功能分類，方便在進行資料分析或撰寫研究結果時快速查閱。</p>
+      </article>
+      <figure class="lesson-visual">
+        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=80" alt="量化研究與統計術語查閱的視覺圖" loading="lazy" />
+      </figure>
+    </section>
+
+    <section class="section-block glossary-sections">
+      ${glossarySections
+        .map(
+          (section) => `
+            <article class="glossary-section">
+              <h2>${section.title}</h2>
+              <div class="table-wrap">
+                <table class="glossary-table">
+                  <thead>
+                    <tr>
+                      <th>中文術語（或名詞）</th>
+                      <th>英文術語（或名詞）</th>
+                      <th>說明</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${section.rows
+                      .map(
+                        ([zh, en, desc]) => `
+                          <tr>
+                            <td>${zh}</td>
+                            <td>${en}</td>
+                            <td>${desc}</td>
+                          </tr>
+                        `,
+                      )
+                      .join('')}
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          `,
+        )
+        .join('')}
+    </section>
+  `;
+}
+
 function renderMethod(page) {
   return `
     <section class="lesson-overview">
@@ -249,7 +393,7 @@ function renderMethod(page) {
 function render() {
   const key = location.hash.replace('#', '') || 'overview';
   const active = pageData[key] ? key : 'overview';
-  const content = active === 'overview' ? renderOverview() : renderMethod(pageData[active]);
+  const content = active === 'overview' ? renderOverview() : active === 'glossary' ? renderGlossary() : renderMethod(pageData[active]);
   document.querySelector('#root').innerHTML = `${renderHeader(active)}<main class="site-main">${content}</main><footer class="site-footer"><p>本網站為 Roger Yen 老師的研究方法與 SPSS 教學網站，由 Codex 依據教學設計自動生成維護。</p><p>外部截圖與搜尋連結僅供學習參考，正式研究報告仍應依課程要求與統計方法文獻撰寫。</p></footer>`;
 }
 
